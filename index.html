@@ -1,96 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formed 40</title>
+  <meta name="description" content="Select a week of pregnancy to see who your baby already is — and where the law stands.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --color-text-primary: #1a1a1a;
-      --color-text-secondary: #6b6b6b;
-      --color-background-primary: #ffffff;
-      --color-background-secondary: #f5f5f5;
-      --color-border-tertiary: #e0e0e0;
-      --color-border-secondary: #c8c8c8;
-      --border-radius-md: 8px;
+      --cream:        #FDFAF5;
+      --cream-mid:    #F4EDE2;
+      --cream-deep:   #E8DDD0;
+      --rose:         #B8707E;
+      --rose-bg:      #F5DCDF;
+      --rose-dark:    #6B2232;
+      --sage:         #7A9878;
+      --text-primary: #231810;
+      --text-secondary: #7C6258;
+      --text-muted:   #AE9E95;
+      --border:       #DDD0C6;
+      --border-light: #EDE5DC;
+      --white:        #FFFFFF;
+      --serif: 'Lora', Georgia, serif;
+      --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --r-sm: 6px;
+      --r-md: 11px;
+      --r-lg: 16px;
     }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    #app{font-family:var(--font-sans);max-width:420px;margin:0 auto;min-height:600px;}
-    #home{display:block;}
-    #detail{display:none;}
-    .home-header{text-align:center;padding:1.5rem 1rem 0.75rem;}
-    .home-title{font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.3px;}
-    .home-tagline{font-size:13px;color:var(--color-text-secondary);margin-top:5px;line-height:1.5;}
-    .weeks-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:0.75rem 1rem 1.5rem;}
-    .wk{aspect-ratio:1;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background 0.12s,border-color 0.12s;}
-    .wk:hover{background:var(--color-background-secondary);border-color:var(--color-border-secondary);}
-    .wk-num{font-size:15px;font-weight:500;color:var(--color-text-primary);}
-    .wk-label{font-size:9px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.4px;margin-top:1px;}
-    .detail-top{display:flex;align-items:center;gap:8px;padding:1rem 1rem 0.5rem;}
-    .back-btn{background:none;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:5px 10px;font-size:12px;color:var(--color-text-secondary);cursor:pointer;}
-    .back-btn:hover{background:var(--color-background-secondary);}
-    .detail-week-badge{font-size:13px;font-weight:500;color:var(--color-text-primary);}
-    .detail-body{padding:0 1rem 2rem;}
-    .section{margin-bottom:1.25rem;}
-    .section-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.6px;color:var(--color-text-secondary);margin-bottom:8px;}
-    .dev-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.875rem 1rem;font-size:14px;line-height:1.65;color:var(--color-text-primary);}
-    .states-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
-    .state-chip{border-radius:4px;padding:4px 2px;font-size:9px;font-weight:500;text-align:center;line-height:1.2;}
-    .state-legal{background:#f09595;color:#501313;}
-    .state-illegal{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);}
-    .states-legend{display:flex;gap:12px;margin-bottom:8px;align-items:center;}
-    .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
-    .legend-text{font-size:11px;color:var(--color-text-secondary);}
-    .story-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.875rem 1rem;font-size:14px;line-height:1.65;color:var(--color-text-primary);border-left:3px solid #f09595;}
-    .talking-point{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:0.875rem 1rem;font-size:14px;line-height:1.6;color:var(--color-text-primary);font-style:italic;}
-    .states-note{font-size:11px;color:var(--color-text-secondary);margin-top:6px;line-height:1.5;}
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--cream); }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #app {
+      max-width: 440px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--cream);
+    }
+
+    /* ─── HOME ─────────────────────────────────────────── */
+
+    .home-header {
+      text-align: center;
+      padding: 2.75rem 1.5rem 1.25rem;
+    }
+
+    .home-title {
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.4px;
+    }
+
+    .home-tagline {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-top: 9px;
+      line-height: 1.65;
+      max-width: 290px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .weeks-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      padding: 1rem 1rem 0.5rem;
+    }
+
+    .wk {
+      aspect-ratio: 1;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-light);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .wk:hover {
+      border-color: var(--border);
+      box-shadow: 0 2px 10px rgba(35,24,16,0.07);
+      transform: translateY(-1px);
+    }
+
+    .wk:active { transform: translateY(0); }
+
+    .wk-num {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .wk-label {
+      font-size: 7.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-top: 3px;
+    }
+
+    /* thin indicator bar at bottom of each week cell */
+    .wk-bar-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--cream-mid);
+    }
+
+    .wk-bar {
+      height: 100%;
+      background: var(--rose);
+      opacity: 0.55;
+    }
+
+    .home-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 0.75rem 1rem 0.25rem;
+    }
+
+    .home-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .home-legend-dot {
+      width: 10px;
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    .home-footer {
+      text-align: center;
+      padding: 1rem 1.5rem 2.5rem;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ─── DETAIL ────────────────────────────────────────── */
+
+    .detail-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 1.125rem 1rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      z-index: 10;
+    }
+
+    .back-btn, .share-btn {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 6px 11px;
+      font-size: 12px;
+      font-family: var(--sans);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover, .share-btn:hover {
+      background: var(--cream-mid);
+      color: var(--text-primary);
+    }
+
+    .detail-week-label {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      flex: 1;
+      text-align: center;
+    }
+
+    .detail-body {
+      padding: 1.375rem 1rem 1.5rem;
+    }
+
+    .section {
+      margin-bottom: 1.625rem;
+    }
+
+    .section-title {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* states */
+    .states-legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+
+    .state-chip {
+      border-radius: 4px;
+      padding: 5px 3px;
+      font-size: 8.5px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: 0.2px;
+    }
+
+    .state-legal {
+      background: var(--rose-bg);
+      color: var(--rose-dark);
+    }
+
+    .state-illegal {
+      background: var(--cream-deep);
+      color: var(--text-muted);
+    }
+
+    .states-note {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 10px;
+      line-height: 1.65;
+      padding: 10px 12px;
+      background: var(--white);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border-light);
+      border-left: 3px solid var(--rose);
+    }
+
+    /* cards */
+    .dev-card {
+      background: var(--white);
+      border-radius: var(--r-md);
+      padding: 1.0625rem 1.125rem;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+    }
+
+    .story-card {
+      background: var(--white);
+      border-radius: var(--r-md);
+      padding: 1.0625rem 1.125rem;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+      border-left: 3px solid var(--rose);
+    }
+
+    .talking-card {
+      background: var(--cream-mid);
+      border-radius: var(--r-md);
+      padding: 1.125rem 1.25rem;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--text-primary);
+    }
+
+    /* prev / next nav */
+    .week-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.25rem 0 2rem;
+      gap: 8px;
+    }
+
+    .week-nav-btn {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 9px 16px;
+      font-size: 12.5px;
+      font-family: var(--sans);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+      flex: 1;
+    }
+
+    .week-nav-btn:hover {
+      background: var(--cream-mid);
+      color: var(--text-primary);
+    }
+
+    .week-nav-btn.prev { text-align: left; }
+    .week-nav-btn.next { text-align: right; }
+    .week-nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .week-nav-btn:disabled:hover { background: var(--white); color: var(--text-secondary); }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--text-primary);
+      color: var(--cream);
+      font-size: 12.5px;
+      padding: 9px 18px;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
-
 <div id="app">
-<div id="home">
-  <div class="home-header">
-    <div class="home-title">Formed 40</div>
-    <div class="home-tagline">Select a week of pregnancy to see who your baby already is — and where the law stands.</div>
-  </div>
-  <div class="weeks-grid" id="weeks-grid"></div>
-</div>
-<div id="detail">
-  <div class="detail-top">
-    <button class="back-btn" onclick="showHome()">← Back</button>
-    <div class="detail-week-badge" id="detail-title"></div>
-  </div>
-  <div class="detail-body">
-    <div class="section">
-      <div class="section-title">State abortion laws this week</div>
-      <div class="states-legend">
-        <div class="legend-dot" style="background:#f09595;"></div>
-        <div class="legend-text">Legal in this state</div>
-        <div class="legend-dot" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);"></div>
-        <div class="legend-text">Banned or restricted</div>
+
+  <!-- HOME -->
+  <div id="view-home">
+    <div class="home-header">
+      <div class="home-title">Formed 40</div>
+      <div class="home-tagline">Select a week of pregnancy to see who your baby already is — and where the law stands.</div>
+    </div>
+    <div class="weeks-grid" id="weeks-grid"></div>
+    <div class="home-legend">
+      <div class="home-legend-item">
+        <div class="home-legend-dot" style="background:var(--rose);opacity:0.55;"></div>
+        States where abortion is legal
       </div>
-      <div class="states-grid" id="states-grid"></div>
-      <div class="states-note" id="states-note"></div>
+      <div class="home-legend-item">
+        <div class="home-legend-dot" style="background:var(--cream-deep);"></div>
+        Banned or restricted
+      </div>
     </div>
-    <div class="section">
-      <div class="section-title">Your baby this week</div>
-      <div class="dev-card" id="dev-text"></div>
+    <div class="home-footer">State law data current as of April 2026.</div>
+  </div>
+
+  <!-- WEEK DETAIL -->
+  <div id="view-detail" style="display:none;">
+    <div class="detail-top">
+      <button class="back-btn" id="back-btn">← All weeks</button>
+      <div class="detail-week-label" id="detail-title"></div>
+      <button class="share-btn" id="share-btn">Share ↗</button>
     </div>
-    <div class="section">
-      <div class="section-title">A story of survival</div>
-      <div class="story-card" id="story-text"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Start the conversation</div>
-      <div class="talking-point" id="talking-text"></div>
+    <div class="detail-body">
+      <div class="section">
+        <div class="section-title">State abortion laws this week</div>
+        <div class="states-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--rose-bg);border:1px solid var(--rose);"></div>
+            Legal in this state
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--cream-deep);"></div>
+            Banned or restricted
+          </div>
+        </div>
+        <div class="states-grid" id="states-grid"></div>
+        <div class="states-note" id="states-note"></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Your baby this week</div>
+        <div class="dev-card" id="dev-text"></div>
+      </div>
+      <div class="section">
+        <div class="section-title">A story of survival</div>
+        <div class="story-card" id="story-text"></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Start the conversation</div>
+        <div class="talking-card" id="talking-text"></div>
+      </div>
+      <div class="week-nav">
+        <button class="week-nav-btn prev" id="prev-btn">← Previous week</button>
+        <button class="week-nav-btn next" id="next-btn">Next week →</button>
+      </div>
     </div>
   </div>
+
 </div>
-</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
 const ALL_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
 
 function legalAtWeek(state, week) {
@@ -152,27 +506,69 @@ const DATA = {
   40:{dev:"Your baby is ready. Fully formed, fully capable, and fully present. He or she has spent 40 weeks growing, developing, feeling, responding, and becoming. Birth is not the beginning of this person's story. It is the next chapter.",story:"Every person who has ever lived — every scientist, artist, teacher, friend, and child — passed through every one of these 40 weeks. The question Formed 40 asks is simple: at which week did they become worth protecting?",talk:"Week 40. A fully formed human baby. If you believe life deserves protection here, work backward through the weeks. Where does your conviction start — and can you explain why not one week earlier?"}
 };
 
-function legalCount(week) {
-  return ALL_STATES.filter(s => legalAtWeek(s, week)).length;
+// ─── ROUTING ─────────────────────────────────────────────────────────────────
+
+function getWeekFromHash() {
+  const m = location.hash.match(/^#week\/(\d+)$/);
+  if (m) {
+    const w = parseInt(m[1]);
+    if (w >= 1 && w <= 40) return w;
+  }
+  return null;
 }
 
-function showHome() {
-  document.getElementById('home').style.display = 'block';
-  document.getElementById('detail').style.display = 'none';
+function goHome() {
+  history.pushState(null, '', location.pathname + location.search);
+  document.getElementById('view-home').style.display = '';
+  document.getElementById('view-detail').style.display = 'none';
+  window.scrollTo(0, 0);
 }
 
-function showWeek(week) {
-  document.getElementById('home').style.display = 'none';
-  document.getElementById('detail').style.display = 'block';
+function goWeek(week) {
+  location.hash = 'week/' + week;
+}
+
+window.addEventListener('hashchange', () => {
+  const w = getWeekFromHash();
+  if (w) renderWeek(w);
+  else {
+    document.getElementById('view-home').style.display = '';
+    document.getElementById('view-detail').style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+});
+
+// ─── HOME GRID ───────────────────────────────────────────────────────────────
+
+const grid = document.getElementById('weeks-grid');
+for (let w = 1; w <= 40; w++) {
+  const legalCount = ALL_STATES.filter(s => legalAtWeek(s, w)).length;
+  const pct = (legalCount / 50 * 100).toFixed(1);
+  const btn = document.createElement('div');
+  btn.className = 'wk';
+  btn.innerHTML =
+    '<div class="wk-num">' + w + '</div>' +
+    '<div class="wk-label">wk</div>' +
+    '<div class="wk-bar-wrap"><div class="wk-bar" style="width:' + pct + '%"></div></div>';
+  btn.addEventListener('click', () => goWeek(w));
+  grid.appendChild(btn);
+}
+
+// ─── RENDER WEEK ─────────────────────────────────────────────────────────────
+
+function renderWeek(week) {
+  document.getElementById('view-home').style.display = 'none';
+  document.getElementById('view-detail').style.display = '';
   document.getElementById('detail-title').textContent = 'Week ' + week + ' of 40';
 
   const d = DATA[week] || DATA[40];
   document.getElementById('dev-text').textContent = d.dev;
   document.getElementById('story-text').textContent = d.story;
-  document.getElementById('talking-text').textContent = '"' + d.talk + '"';
+  document.getElementById('talking-text').textContent = '\u201c' + d.talk + '\u201d';
 
-  const grid = document.getElementById('states-grid');
-  grid.innerHTML = '';
+  // states grid
+  const sg = document.getElementById('states-grid');
+  sg.innerHTML = '';
   let legalStates = [];
   ALL_STATES.forEach(s => {
     const legal = legalAtWeek(s, week);
@@ -180,27 +576,69 @@ function showWeek(week) {
     const chip = document.createElement('div');
     chip.className = 'state-chip ' + (legal ? 'state-legal' : 'state-illegal');
     chip.textContent = s;
-    grid.appendChild(chip);
+    sg.appendChild(chip);
   });
 
-  const illegalCount = 50 - legalStates.length;
+  const banned = 50 - legalStates.length;
   const note = document.getElementById('states-note');
   if (legalStates.length === 0) {
-    note.textContent = 'Abortion is banned in all 50 states at week ' + week + '.';
+    note.textContent = 'Abortion is banned or restricted in all 50 states at this stage.';
   } else {
-    note.textContent = 'At week ' + week + ', abortion is legal in ' + legalStates.length + ' states and banned or restricted in ' + illegalCount + '. A baby at this stage is protected in ' + illegalCount + ' states and not in ' + legalStates.length + ' others.';
+    note.textContent =
+      'At week ' + week + ', abortion is legal in ' + legalStates.length +
+      ' state' + (legalStates.length === 1 ? '' : 's') +
+      ' and banned or restricted in ' + banned + '. A baby at this stage is ' +
+      'protected in ' + banned + ' states and not in ' + legalStates.length + ' others.';
   }
+
+  // prev / next
+  document.getElementById('prev-btn').disabled = week <= 1;
+  document.getElementById('next-btn').disabled = week >= 40;
+  document.getElementById('prev-btn').onclick = () => goWeek(week - 1);
+  document.getElementById('next-btn').onclick = () => goWeek(week + 1);
+
+  window.scrollTo(0, 0);
 }
 
-const grid = document.getElementById('weeks-grid');
-for (let w = 1; w <= 40; w++) {
-  const btn = document.createElement('div');
-  btn.className = 'wk';
-  btn.innerHTML = '<div class="wk-num">' + w + '</div><div class="wk-label">week</div>';
-  btn.onclick = () => showWeek(w);
-  grid.appendChild(btn);
+// ─── NAV BUTTONS ─────────────────────────────────────────────────────────────
+
+document.getElementById('back-btn').addEventListener('click', goHome);
+
+document.getElementById('share-btn').addEventListener('click', () => {
+  const url = location.href;
+  const copy = () => showToast('Link copied');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(copy).catch(() => fallbackCopy(url, copy));
+  } else {
+    fallbackCopy(url, copy);
+  }
+});
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); cb(); } catch(e) {}
+  document.body.removeChild(ta);
 }
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+
+const initWeek = getWeekFromHash();
+if (initWeek) renderWeek(initWeek);
 </script>
-
 </body>
 </html>
