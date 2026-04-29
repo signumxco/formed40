@@ -120,44 +120,6 @@
       margin-top: 3px;
     }
 
-    /* thin indicator bar at bottom of each week cell */
-    .wk-bar-wrap {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--cream-mid);
-    }
-
-    .wk-bar {
-      height: 100%;
-      background: var(--rose);
-      opacity: 0.55;
-    }
-
-    .home-legend {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 0.75rem 1rem 0.25rem;
-    }
-
-    .home-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .home-legend-dot {
-      width: 10px;
-      height: 3px;
-      border-radius: 2px;
-    }
-
     .home-footer {
       text-align: center;
       padding: 1rem 1.5rem 2.5rem;
@@ -349,6 +311,69 @@
     .week-nav-btn:disabled { opacity: 0.3; cursor: default; }
     .week-nav-btn:disabled:hover { background: var(--white); color: var(--text-secondary); }
 
+    /* wildlife */
+    .wildlife-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wildlife-item {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-md);
+      padding: 0.75rem 1rem;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .wildlife-icon {
+      font-size: 22px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .wildlife-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .wildlife-name {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .wildlife-law {
+      font-size: 10.5px;
+      color: var(--sage);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-top: 2px;
+    }
+
+    .wildlife-note {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-top: 4px;
+    }
+
+    .wildlife-callout {
+      background: var(--cream-mid);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
     /* toast */
     .toast {
       position: fixed;
@@ -383,16 +408,6 @@
       <div class="home-tagline">Select a week of pregnancy to see who your baby already is — and where the law stands.</div>
     </div>
     <div class="weeks-grid" id="weeks-grid"></div>
-    <div class="home-legend">
-      <div class="home-legend-item">
-        <div class="home-legend-dot" style="background:var(--rose);opacity:0.55;"></div>
-        States where abortion is legal
-      </div>
-      <div class="home-legend-item">
-        <div class="home-legend-dot" style="background:var(--cream-deep);"></div>
-        Banned or restricted
-      </div>
-    </div>
     <div class="home-footer">State law data current as of April 2026.</div>
   </div>
 
@@ -426,6 +441,11 @@
       <div class="section">
         <div class="section-title">A story of survival</div>
         <div class="story-card" id="story-text"></div>
+      </div>
+      <div class="section">
+        <div class="section-title">More protected by law than your baby</div>
+        <div class="wildlife-list" id="wildlife-list"></div>
+        <div class="wildlife-callout" id="wildlife-callout"></div>
       </div>
       <div class="section">
         <div class="section-title">Start the conversation</div>
@@ -506,6 +526,97 @@ const DATA = {
   40:{dev:"Your baby is ready. Fully formed, fully capable, and fully present. He or she has spent 40 weeks growing, developing, feeling, responding, and becoming. Birth is not the beginning of this person's story. It is the next chapter.",story:"Every person who has ever lived — every scientist, artist, teacher, friend, and child — passed through every one of these 40 weeks. The question Formed 40 asks is simple: at which week did they become worth protecting?",talk:"Week 40. A fully formed human baby. If you believe life deserves protection here, work backward through the weeks. Where does your conviction start — and can you explain why not one week earlier?"}
 };
 
+// ─── WILDLIFE DATA ───────────────────────────────────────────────────────────
+// Each entry: at what week it applies (1 = all weeks), icon, name, law, note
+// "week" means "protected from week X onward" — we show ones that apply at current week
+
+const WILDLIFE = [
+  {
+    from: 1,
+    icon: "🦅",
+    name: "Bald eagle egg",
+    law: "Bald and Golden Eagle Protection Act (1940)",
+    note: "It is a federal crime to disturb, possess, or destroy a bald eagle egg at any stage of development — even before it hatches. Penalty: up to $100,000 and one year in prison per violation."
+  },
+  {
+    from: 1,
+    icon: "🐢",
+    name: "Sea turtle egg",
+    law: "Endangered Species Act (1973)",
+    note: "All sea turtle species are federally protected. Destroying or taking a sea turtle egg carries fines up to $50,000 and up to one year in prison — from the moment the egg is laid."
+  },
+  {
+    from: 1,
+    icon: "🌵",
+    name: "Saguaro cactus",
+    law: "Arizona Native Plant Law",
+    note: "It is illegal to cut down, destroy, or transplant a saguaro cactus in Arizona without a permit. The cactus, which cannot feel pain and has no nervous system, receives explicit state legal protection."
+  },
+  {
+    from: 1,
+    icon: "🐝",
+    name: "Monarch butterfly",
+    law: "California Endangered Species Act",
+    note: "California classifies the monarch butterfly as a candidate for endangered status, triggering legal protections against harm. A butterfly has roughly 1 million neurons. A human embryo at week 5 already has a beating heart."
+  },
+  {
+    from: 1,
+    icon: "🦈",
+    name: "Great white shark",
+    law: "California Fish and Game Code §2000",
+    note: "Great white sharks have been protected in California waters since 1994. It is illegal to fish for, pursue, or harm one. The shark has no legal standing — but it has more de facto protection than a human embryo in the same state."
+  },
+  {
+    from: 1,
+    icon: "🌲",
+    name: "Coast redwood tree",
+    law: "California Forest Practice Rules",
+    note: "Cutting a coast redwood requires a Timber Harvest Plan approved by the state. Old-growth redwoods receive additional protections. A tree with no nervous system, no heartbeat, and no DNA distinct from its species has a regulated right to exist."
+  },
+  {
+    from: 4,
+    icon: "🐦",
+    name: "Migratory bird nest (with eggs)",
+    law: "Migratory Bird Treaty Act (1918)",
+    note: "It is illegal to destroy the active nest of any of 1,000+ protected migratory bird species once eggs are present. The eggs — undeveloped, with no heartbeat — are federally protected. Your baby has a heartbeat by week 4."
+  },
+  {
+    from: 1,
+    icon: "🐬",
+    name: "Bottlenose dolphin",
+    law: "Marine Mammal Protection Act (1972)",
+    note: "It is illegal to harass, hunt, capture, or kill any marine mammal in U.S. waters. Violations carry fines up to $100,000. This protection applies regardless of the dolphin's age, viability, or location."
+  },
+  {
+    from: 1,
+    icon: "🌿",
+    name: "American ginseng plant",
+    law: "Convention on International Trade in Endangered Species (CITES)",
+    note: "Wild American ginseng is regulated under federal and state law. Harvesting it without permits is illegal in many states. A plant with no cells resembling a nervous system receives more consistent legal protection than a human embryo in 35 states."
+  }
+];
+
+function renderWildlife(week) {
+  const list = document.getElementById('wildlife-list');
+  list.innerHTML = '';
+  const applicable = WILDLIFE.filter(w => week >= w.from);
+  applicable.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'wildlife-item';
+    el.innerHTML =
+      '<div class="wildlife-icon">' + item.icon + '</div>' +
+      '<div class="wildlife-body">' +
+        '<div class="wildlife-name">' + item.name + '</div>' +
+        '<div class="wildlife-law">' + item.law + '</div>' +
+        '<div class="wildlife-note">' + item.note + '</div>' +
+      '</div>';
+    list.appendChild(el);
+  });
+  document.getElementById('wildlife-callout').textContent =
+    'These animals, eggs, and plants receive explicit federal or state legal protection that does not exist for a human baby at week ' + week + ' in ' +
+    ALL_STATES.filter(s => legalAtWeek(s, week)).length + ' U.S. states.';
+}
+
 // ─── ROUTING ─────────────────────────────────────────────────────────────────
 
 function getWeekFromHash() {
@@ -542,14 +653,11 @@ window.addEventListener('hashchange', () => {
 
 const grid = document.getElementById('weeks-grid');
 for (let w = 1; w <= 40; w++) {
-  const legalCount = ALL_STATES.filter(s => legalAtWeek(s, w)).length;
-  const pct = (legalCount / 50 * 100).toFixed(1);
   const btn = document.createElement('div');
   btn.className = 'wk';
   btn.innerHTML =
     '<div class="wk-num">' + w + '</div>' +
-    '<div class="wk-label">wk</div>' +
-    '<div class="wk-bar-wrap"><div class="wk-bar" style="width:' + pct + '%"></div></div>';
+    '<div class="wk-label">wk</div>';
   btn.addEventListener('click', () => goWeek(w));
   grid.appendChild(btn);
 }
@@ -565,6 +673,8 @@ function renderWeek(week) {
   document.getElementById('dev-text').textContent = d.dev;
   document.getElementById('story-text').textContent = d.story;
   document.getElementById('talking-text').textContent = '\u201c' + d.talk + '\u201d';
+
+  renderWildlife(week);
 
   // states grid
   const sg = document.getElementById('states-grid');
