@@ -57,12 +57,9 @@
       padding: 2.75rem 1.5rem 1.25rem;
     }
 
-    .home-title {
-      font-family: var(--serif);
-      font-size: 30px;
-      font-weight: 500;
-      color: var(--text-primary);
-      letter-spacing: -0.4px;
+    .home-logo {
+      width: 160px;
+      mix-blend-mode: multiply;
     }
 
     .home-tagline {
@@ -350,67 +347,94 @@
     .week-nav-btn:disabled { opacity: 0.3; cursor: default; }
     .week-nav-btn:disabled:hover { background: var(--white); color: var(--text-secondary); }
 
-    /* wildlife */
-    .wildlife-list {
-      display: flex;
-      flex-direction: column;
+    /* wildlife grid */
+    .wildlife-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
 
-    .wildlife-item {
-      background: var(--white);
-      border: 1px solid var(--border-light);
+    .wildlife-tile {
+      aspect-ratio: 1;
       border-radius: var(--r-md);
-      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-light);
+      background: var(--white);
+      cursor: pointer;
       display: flex;
-      gap: 12px;
-      align-items: flex-start;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 6px;
+      text-align: center;
+      transition: border-color 0.12s, background 0.12s, transform 0.1s;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .wildlife-icon {
-      font-size: 22px;
-      line-height: 1;
-      flex-shrink: 0;
+    .wildlife-tile:hover { border-color: var(--border); background: var(--cream-mid); }
+    .wildlife-tile:active { transform: scale(0.97); }
+
+    .wildlife-tile.active {
+      border-color: var(--sage);
+      background: #EAF2EA;
+    }
+
+    .wildlife-tile-icon { font-size: 26px; line-height: 1; }
+
+    .wildlife-tile-name {
+      font-size: 8.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.25;
+    }
+
+    /* expanded detail panel */
+    .wildlife-detail {
+      background: var(--white);
+      border: 1px solid var(--sage);
+      border-radius: var(--r-md);
+      padding: 0.875rem 1rem;
+      margin-top: 6px;
+      display: none;
+      animation: fadeSlide 0.15s ease;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .wildlife-detail.show { display: block; }
+
+    .wildlife-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .wildlife-detail-icon { font-size: 24px; line-height: 1; }
+
+    .wildlife-detail-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .wildlife-detail-law {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--sage);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-top: 1px;
     }
 
-    .wildlife-body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .wildlife-name {
-      font-size: 13.5px;
-      font-weight: 500;
-      color: var(--text-primary);
-      line-height: 1.3;
-    }
-
-    .wildlife-law {
-      font-size: 10.5px;
-      color: var(--sage);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-top: 2px;
-    }
-
-    .wildlife-note {
-      font-size: 12px;
+    .wildlife-detail-note {
+      font-size: 13px;
       color: var(--text-secondary);
-      line-height: 1.55;
-      margin-top: 4px;
-    }
-
-    .wildlife-callout {
-      background: var(--cream-mid);
-      border-radius: var(--r-sm);
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-top: 8px;
-      font-style: italic;
+      line-height: 1.65;
     }
 
     /* toast */
@@ -443,7 +467,7 @@
   <!-- HOME -->
   <div id="view-home">
     <div class="home-header">
-      <div class="home-title">Formed 40</div>
+      <img src="formed40 logo.jpg" alt="Formed 40" class="home-logo">
       <div class="home-tagline">Select a week of pregnancy to see who your baby already is — and where the law stands.</div>
     </div>
     <div class="weeks-grid" id="weeks-grid"></div>
@@ -485,8 +509,8 @@
       </div>
       <div class="section">
         <div class="section-title">More protected by law than your baby</div>
-        <div class="wildlife-list" id="wildlife-list"></div>
-        <div class="wildlife-callout" id="wildlife-callout"></div>
+        <div class="wildlife-grid" id="wildlife-grid"></div>
+        <div class="wildlife-detail" id="wildlife-detail"></div>
       </div>
       <div class="section">
         <div class="section-title">Start the conversation</div>
@@ -574,64 +598,64 @@ const DATA = {
 
 const WILDLIFE = [
   {
-    from: 1,
-    icon: "🦅",
+    from: 1, icon: "🦅",
+    short: "Bald eagle egg",
     name: "Bald eagle egg",
     law: "Bald and Golden Eagle Protection Act (1940)",
     note: "It is a federal crime to disturb, possess, or destroy a bald eagle egg at any stage of development — even before it hatches. Penalty: up to $100,000 and one year in prison per violation."
   },
   {
-    from: 1,
-    icon: "🐢",
+    from: 1, icon: "🐢",
+    short: "Sea turtle egg",
     name: "Sea turtle egg",
     law: "Endangered Species Act (1973)",
     note: "All sea turtle species are federally protected. Destroying or taking a sea turtle egg carries fines up to $50,000 and up to one year in prison — from the moment the egg is laid."
   },
   {
-    from: 1,
-    icon: "🌵",
+    from: 1, icon: "🌵",
+    short: "Saguaro cactus",
     name: "Saguaro cactus",
     law: "Arizona Native Plant Law",
     note: "It is illegal to cut down, destroy, or transplant a saguaro cactus in Arizona without a permit. The cactus, which cannot feel pain and has no nervous system, receives explicit state legal protection."
   },
   {
-    from: 1,
-    icon: "🐝",
+    from: 1, icon: "🦋",
+    short: "Monarch butterfly",
     name: "Monarch butterfly",
     law: "California Endangered Species Act",
     note: "California classifies the monarch butterfly as a candidate for endangered status, triggering legal protections against harm. A butterfly has roughly 1 million neurons. A human embryo at week 5 already has a beating heart."
   },
   {
-    from: 1,
-    icon: "🦈",
+    from: 1, icon: "🦈",
+    short: "Great white shark",
     name: "Great white shark",
     law: "California Fish and Game Code §2000",
     note: "Great white sharks have been protected in California waters since 1994. It is illegal to fish for, pursue, or harm one. The shark has no legal standing — but it has more de facto protection than a human embryo in the same state."
   },
   {
-    from: 1,
-    icon: "🌲",
+    from: 1, icon: "🌲",
+    short: "Coast redwood",
     name: "Coast redwood tree",
     law: "California Forest Practice Rules",
     note: "Cutting a coast redwood requires a Timber Harvest Plan approved by the state. Old-growth redwoods receive additional protections. A tree with no nervous system, no heartbeat, and no DNA distinct from its species has a regulated right to exist."
   },
   {
-    from: 4,
-    icon: "🐦",
+    from: 4, icon: "🪺",
+    short: "Migratory bird nest",
     name: "Migratory bird nest (with eggs)",
     law: "Migratory Bird Treaty Act (1918)",
     note: "It is illegal to destroy the active nest of any of 1,000+ protected migratory bird species once eggs are present. The eggs — undeveloped, with no heartbeat — are federally protected. Your baby has a heartbeat by week 4."
   },
   {
-    from: 1,
-    icon: "🐬",
+    from: 1, icon: "🐬",
+    short: "Bottlenose dolphin",
     name: "Bottlenose dolphin",
     law: "Marine Mammal Protection Act (1972)",
     note: "It is illegal to harass, hunt, capture, or kill any marine mammal in U.S. waters. Violations carry fines up to $100,000. This protection applies regardless of the dolphin's age, viability, or location."
   },
   {
-    from: 1,
-    icon: "🌿",
+    from: 1, icon: "🌿",
+    short: "Ginseng plant",
     name: "American ginseng plant",
     law: "Convention on International Trade in Endangered Species (CITES)",
     note: "Wild American ginseng is regulated under federal and state law. Harvesting it without permits is illegal in many states. A plant with no cells resembling a nervous system receives more consistent legal protection than a human embryo in 35 states."
@@ -639,24 +663,51 @@ const WILDLIFE = [
 ];
 
 function renderWildlife(week) {
-  const list = document.getElementById('wildlife-list');
-  list.innerHTML = '';
+  const grid = document.getElementById('wildlife-grid');
+  const detail = document.getElementById('wildlife-detail');
+  grid.innerHTML = '';
+  detail.className = 'wildlife-detail';
+  detail.innerHTML = '';
+
   const applicable = WILDLIFE.filter(w => week >= w.from);
-  applicable.forEach(item => {
-    const el = document.createElement('div');
-    el.className = 'wildlife-item';
-    el.innerHTML =
-      '<div class="wildlife-icon">' + item.icon + '</div>' +
-      '<div class="wildlife-body">' +
-        '<div class="wildlife-name">' + item.name + '</div>' +
-        '<div class="wildlife-law">' + item.law + '</div>' +
-        '<div class="wildlife-note">' + item.note + '</div>' +
-      '</div>';
-    list.appendChild(el);
+  let activeTile = null;
+
+  applicable.forEach((item, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'wildlife-tile';
+    tile.innerHTML =
+      '<div class="wildlife-tile-icon">' + item.icon + '</div>' +
+      '<div class="wildlife-tile-name">' + item.short + '</div>';
+
+    tile.addEventListener('click', () => {
+      if (activeTile === tile) {
+        // collapse
+        tile.classList.remove('active');
+        detail.className = 'wildlife-detail';
+        detail.innerHTML = '';
+        activeTile = null;
+        return;
+      }
+      if (activeTile) activeTile.classList.remove('active');
+      tile.classList.add('active');
+      activeTile = tile;
+
+      detail.innerHTML =
+        '<div class="wildlife-detail-header">' +
+          '<div class="wildlife-detail-icon">' + item.icon + '</div>' +
+          '<div>' +
+            '<div class="wildlife-detail-name">' + item.name + '</div>' +
+            '<div class="wildlife-detail-law">' + item.law + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="wildlife-detail-note">' + item.note + '</div>';
+      detail.className = 'wildlife-detail show';
+      // smooth scroll so detail is visible
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    grid.appendChild(tile);
   });
-  document.getElementById('wildlife-callout').textContent =
-    'These animals, eggs, and plants receive explicit federal or state legal protection that does not exist for a human baby at week ' + week + ' in ' +
-    ALL_STATES.filter(s => legalAtWeek(s, week)).length + ' U.S. states.';
 }
 
 // ─── MAP ─────────────────────────────────────────────────────────────────────
