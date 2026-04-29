@@ -242,9 +242,9 @@
       transition: fill 0.18s;
     }
 
-    .map-wrap path.state-legal        { fill: var(--rose); }
-    .map-wrap path.state-restricted   { fill: #C4A882; }
-    .map-wrap path.state-total-ban    { fill: #7A6248; }
+    .map-wrap path.state-legal        { fill: #E8928A; }
+    .map-wrap path.state-restricted   { fill: #D4BC6A; }
+    .map-wrap path.state-total-ban    { fill: #88B3A0; }
 
     /* tooltip */
     .map-tooltip {
@@ -610,6 +610,23 @@
       margin-top: 1rem;
     }
 
+    .help-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .help-toggle:hover { color: var(--rose); }
+    .help-toggle-arrow { font-size: 16px; color: var(--text-muted); }
+
     .help-section-title {
       font-family: var(--serif);
       font-size: 22px;
@@ -713,7 +730,8 @@
     <div class="home-footer">State law data current as of April 2026.</div>
 
     <div class="help-section">
-      <div class="help-section-title">Get Help</div>
+      <button class="help-toggle" id="help-toggle" onclick="(function(){var b=document.getElementById('help-toggle'),c=document.getElementById('help-content');var open=c.style.display!=='none';c.style.display=open?'none':'block';b.querySelector('.help-toggle-arrow').textContent=open?'▾':'▴';})()">Get Help <span class="help-toggle-arrow">▾</span></button>
+      <div id="help-content" style="display:none;">
       <div class="help-section-sub">Resources are available — confidential, 24/7, and free. Whether you're facing a decision, processing a past experience, or looking for another path forward.</div>
 
       <div class="help-category">
@@ -785,6 +803,7 @@
           <div class="help-org-contact"><a href="https://abortionworker.com">abortionworker.com</a> · (888) 570-5501</div>
         </div>
       </div>
+      </div><!-- /help-content -->
     </div>
   </div>
 
@@ -802,15 +821,15 @@
           <svg id="us-map" viewBox="0 0 960 600"></svg>
           <div class="map-legend">
             <div class="map-legend-item">
-              <div class="map-legend-dot" style="background:var(--rose);"></div>
+              <div class="map-legend-dot" style="background:#E8928A;"></div>
               Legal
             </div>
             <div class="map-legend-item">
-              <div class="map-legend-dot" style="background:#C4A882;"></div>
-              Restricted here
+              <div class="map-legend-dot" style="background:#D4BC6A;"></div>
+              Restricted
             </div>
             <div class="map-legend-item">
-              <div class="map-legend-dot" style="background:#7A6248;"></div>
+              <div class="map-legend-dot" style="background:#88B3A0;"></div>
               Total ban
             </div>
           </div>
@@ -1230,8 +1249,12 @@ function renderMap(week) {
       const status = statusAtWeek(abbr, week);
       tooltip.textContent = STATE_NAMES[abbr] + ' — ' + STATUS_LABELS[status];
       tooltip.style.opacity = '1';
-      tooltip.style.left = (event.clientX + 12) + 'px';
-      tooltip.style.top  = (event.clientY - 28) + 'px';
+      const tw = tooltip.offsetWidth || 160;
+      const th = tooltip.offsetHeight || 28;
+      const x = Math.min(event.clientX + 12, window.innerWidth - tw - 8);
+      const y = Math.max(event.clientY - 36, 8);
+      tooltip.style.left = x + 'px';
+      tooltip.style.top  = y + 'px';
     })
     .on('mouseleave', () => { tooltip.style.opacity = '0'; });
 }
