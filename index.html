@@ -12,19 +12,26 @@
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <style>
     :root {
-      --cream:        #FDFAF5;
-      --cream-mid:    #F4EDE2;
-      --cream-deep:   #E8DDD0;
-      --rose:         #B8707E;
-      --rose-bg:      #F5DCDF;
-      --rose-dark:    #6B2232;
-      --sage:         #7A9878;
-      --text-primary: #231810;
-      --text-secondary: #7C6258;
-      --text-muted:   #AE9E95;
-      --border:       #DDD0C6;
-      --border-light: #EDE5DC;
-      --white:        #FFFFFF;
+      /* warm cream base — complements both teal and peach */
+      --cream:        #FDF8F4;
+      --cream-mid:    #F5EDE4;
+      --cream-deep:   #E8DDD2;
+
+      /* peach — from logo #F2B090, deepened for contrast */
+      --rose:         #C97550;
+      --rose-bg:      #FDEADB;
+      --rose-dark:    #7A3515;
+
+      /* teal — exact logo #88B3B5 */
+      --sage:         #88B3B5;
+      --sage-dark:    #3D7275;
+
+      --text-primary:   #1E1410;
+      --text-secondary: #6E5C54;
+      --text-muted:     #A89890;
+      --border:         #DDD0C4;
+      --border-light:   #EDE6DE;
+      --white:          #FFFFFF;
       --serif: 'Lora', Georgia, serif;
       --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --r-sm: 6px;
@@ -377,7 +384,7 @@
 
     .wildlife-tile.active {
       border-color: var(--sage);
-      background: #EAF2EA;
+      background: #D8EBEC;
     }
 
     .wildlife-tile-icon { font-size: 26px; line-height: 1; }
