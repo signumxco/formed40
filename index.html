@@ -6,6 +6,12 @@
   <title>Formed 40</title>
   <meta name="description" content="Select a week of pregnancy to see who your baby already is — and where the law stands.">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <meta property="og:title" content="Formed 40 — Who is your baby, week by week?">
+  <meta property="og:description" content="Select a week of pregnancy to see who your baby already is — and where the law stands.">
+  <meta property="og:image" content="shareable%20image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="shareable%20image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -236,8 +242,9 @@
       transition: fill 0.18s;
     }
 
-    .map-wrap path.state-legal   { fill: var(--rose); }
-    .map-wrap path.state-illegal { fill: var(--cream-deep); }
+    .map-wrap path.state-legal        { fill: var(--rose); }
+    .map-wrap path.state-restricted   { fill: #C4A882; }
+    .map-wrap path.state-total-ban    { fill: #7A6248; }
 
     /* tooltip */
     .map-tooltip {
@@ -288,6 +295,11 @@
       border-radius: var(--r-sm);
       border: 1px solid var(--border-light);
       border-left: 3px solid var(--rose);
+    }
+
+    .states-note strong {
+      color: var(--text-primary);
+      font-weight: 500;
     }
 
     /* cards */
@@ -591,6 +603,78 @@
       line-height: 1.6;
     }
 
+    /* get help */
+    .help-section {
+      padding: 2rem 1rem 3rem;
+      border-top: 1px solid var(--border-light);
+      margin-top: 1rem;
+    }
+
+    .help-section-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .help-section-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .help-category {
+      margin-bottom: 1.5rem;
+    }
+
+    .help-category-title {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .help-org {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-md);
+      padding: 0.875rem 1rem;
+      margin-bottom: 6px;
+    }
+
+    .help-org-name {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--sage-dark);
+      margin-bottom: 5px;
+    }
+
+    .help-org-body {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .help-org-body a {
+      color: var(--rose);
+      text-decoration: none;
+    }
+
+    .help-org-body a:hover { text-decoration: underline; }
+
+    .help-org-contact {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
     /* toast */
     .toast {
       position: fixed;
@@ -627,6 +711,81 @@
     <div class="home-stat">In 2025, there were an estimated <strong>31 abortions for every 100 live births</strong> in the United States.</div>
     <div class="weeks-grid" id="weeks-grid"></div>
     <div class="home-footer">State law data current as of April 2026.</div>
+
+    <div class="help-section">
+      <div class="help-section-title">Get Help</div>
+      <div class="help-section-sub">Resources are available — confidential, 24/7, and free. Whether you're facing a decision, processing a past experience, or looking for another path forward.</div>
+
+      <div class="help-category">
+        <div class="help-category-title">Are you pregnant?</div>
+        <div class="help-org">
+          <div class="help-org-name">Option Line</div>
+          <div class="help-org-body">Confidential live chat, text line, and toll-free phone available 24/7. Resources for women considering abortion, who have had an abortion, or seeking alternatives.</div>
+          <div class="help-org-contact"><a href="https://optionline.org">optionline.org</a> · (800) 712-4357</div>
+        </div>
+        <div class="help-org">
+          <div class="help-org-name">Care Net</div>
+          <div class="help-org-body">Free resources and a confidential toll-free phone line, available 6 AM–10 PM ET.</div>
+          <div class="help-org-contact"><a href="https://care-net.org/find-a-pregnancy-center">care-net.org/find-a-pregnancy-center</a> · (800) 712-4357</div>
+        </div>
+      </div>
+
+      <div class="help-category">
+        <div class="help-category-title">Have you had an abortion?</div>
+        <div class="help-org">
+          <div class="help-org-name">Option Line</div>
+          <div class="help-org-body">Confidential live chat, text, and phone available 24/7 — including resources for those seeking support after an abortion.</div>
+          <div class="help-org-contact"><a href="https://optionline.org">optionline.org</a> · (800) 712-4357</div>
+        </div>
+        <div class="help-org">
+          <div class="help-org-name">International Helpline for Abortion Recovery</div>
+          <div class="help-org-body">Confidential care 24/7 for those needing help after abortion, staffed by consultants who have personally experienced — and found healing from — abortion loss.</div>
+          <div class="help-org-contact"><a href="https://nationalhelpline.org">nationalhelpline.org</a> · (866) 482-5433</div>
+        </div>
+        <div class="help-org">
+          <div class="help-org-name">Rachel's Vineyard</div>
+          <div class="help-org-body">Confidential weekend retreat programs and support services across the U.S., Canada, and internationally for anyone affected by abortion.</div>
+          <div class="help-org-contact"><a href="https://rachelsvineyard.org">rachelsvineyard.org</a> · (877) 467-3463 · <a href="mailto:rachel@rachelsvineyard.org">rachel@rachelsvineyard.org</a></div>
+        </div>
+      </div>
+
+      <div class="help-category">
+        <div class="help-category-title">Have you taken the abortion pill?</div>
+        <div class="help-org">
+          <div class="help-org-name">Abortion Pill Reversal</div>
+          <div class="help-org-body">24/7 hotline staffed by medical professionals for women seeking abortion pill reversal. Network of 270+ physicians worldwide.</div>
+          <div class="help-org-contact"><a href="https://reverseabortionpill.com">reverseabortionpill.com</a> · (855) 209-4848</div>
+        </div>
+      </div>
+
+      <div class="help-category">
+        <div class="help-category-title">Are you interested in adoption?</div>
+        <div class="help-org">
+          <div class="help-org-name">Bethany Christian Services</div>
+          <div class="help-org-body">Global nonprofit offering adoption, foster care, and pregnancy counseling. Toll-free line operated 24/7.</div>
+          <div class="help-org-contact"><a href="https://bethany.org">bethany.org</a> · (844) 824-6673</div>
+        </div>
+        <div class="help-org">
+          <div class="help-org-name">American Adoptions</div>
+          <div class="help-org-body">Fully licensed, not-for-profit domestic adoption agency — one of the largest in the country. Adoption professionals available 24/7.</div>
+          <div class="help-org-contact"><a href="https://americanadoptions.com">americanadoptions.com</a> · (800) 236-7846</div>
+        </div>
+        <div class="help-org">
+          <div class="help-org-name">Safe Haven Alliance</div>
+          <div class="help-org-body">Dedicated to helping women choose safe-haven relinquishment, adoption, or parenting. Crisis hotline staffed 24/7.</div>
+          <div class="help-org-contact"><a href="https://nationalsafehavenalliance.org">nationalsafehavenalliance.org</a> · (888) 510-2229</div>
+        </div>
+      </div>
+
+      <div class="help-category">
+        <div class="help-category-title">Are you an abortion worker?</div>
+        <div class="help-org">
+          <div class="help-org-name">And Then There Were None</div>
+          <div class="help-org-body">Helps abortion workers leave the industry through job recruitment, legal help, emotional support, financial assistance, professional counseling, and all-expense-paid healing retreats. Completely confidential.</div>
+          <div class="help-org-contact"><a href="https://abortionworker.com">abortionworker.com</a> · (888) 570-5501</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- WEEK DETAIL -->
@@ -644,11 +803,15 @@
           <div class="map-legend">
             <div class="map-legend-item">
               <div class="map-legend-dot" style="background:var(--rose);"></div>
-              Legal in this state
+              Legal
             </div>
             <div class="map-legend-item">
-              <div class="map-legend-dot" style="background:var(--cream-deep);"></div>
-              Banned or restricted
+              <div class="map-legend-dot" style="background:#C4A882;"></div>
+              Restricted here
+            </div>
+            <div class="map-legend-item">
+              <div class="map-legend-dot" style="background:#7A6248;"></div>
+              Total ban
             </div>
           </div>
         </div>
@@ -1021,6 +1184,26 @@ fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json')
 
 let currentWeek = null;
 
+const TOTAL_BAN_STATES = new Set(["AL","AR","ID","IN","KY","LA","MS","ND","OK","SD","TN","TX","WV"]);
+
+function statusAtWeek(abbr, week) {
+  if (TOTAL_BAN_STATES.has(abbr)) return 'total_ban';
+  if (legalAtWeek(abbr, week)) return 'legal';
+  return 'restricted'; // has a gestational limit that already passed
+}
+
+const STATUS_LABELS = {
+  legal:      'Legal at this stage',
+  restricted: 'Restricted / banned at this stage (limit already passed)',
+  total_ban:  'Total ban — no gestational access'
+};
+
+const STATUS_CLASSES = {
+  legal:     'state-legal',
+  restricted:'state-restricted',
+  total_ban: 'state-total-ban'
+};
+
 function renderMap(week) {
   if (!mapReady) return;
 
@@ -1038,13 +1221,14 @@ function renderMap(week) {
     .attr('d', path)
     .attr('class', d => {
       const abbr = FIPS[String(d.id).padStart(2, '0')];
-      return abbr && legalAtWeek(abbr, week) ? 'state-legal' : 'state-illegal';
+      if (!abbr) return 'state-restricted';
+      return STATUS_CLASSES[statusAtWeek(abbr, week)];
     })
     .on('mousemove', function(event, d) {
       const abbr = FIPS[String(d.id).padStart(2, '0')];
       if (!abbr) return;
-      const legal = legalAtWeek(abbr, week);
-      tooltip.textContent = STATE_NAMES[abbr] + ' — ' + (legal ? 'Legal' : 'Banned / restricted');
+      const status = statusAtWeek(abbr, week);
+      tooltip.textContent = STATE_NAMES[abbr] + ' — ' + STATUS_LABELS[status];
       tooltip.style.opacity = '1';
       tooltip.style.left = (event.clientX + 12) + 'px';
       tooltip.style.top  = (event.clientY - 28) + 'px';
@@ -1117,18 +1301,16 @@ function renderWeek(week) {
   currentWeek = week;
   renderMap(week);
 
-  const legalStates = ALL_STATES.filter(s => legalAtWeek(s, week));
-  const banned = 50 - legalStates.length;
+  const legalCount      = ALL_STATES.filter(s => statusAtWeek(s, week) === 'legal').length;
+  const restrictedCount = ALL_STATES.filter(s => statusAtWeek(s, week) === 'restricted').length;
+  const totalBanCount   = ALL_STATES.filter(s => statusAtWeek(s, week) === 'total_ban').length;
   const note = document.getElementById('states-note');
-  if (legalStates.length === 0) {
-    note.textContent = 'Abortion is banned or restricted in all 50 states at this stage.';
-  } else {
-    note.textContent =
-      'At week ' + week + ', abortion is legal in ' + legalStates.length +
-      ' state' + (legalStates.length === 1 ? '' : 's') +
-      ' and banned or restricted in ' + banned + '. A baby at this stage is ' +
-      'protected in ' + banned + ' states and not in ' + legalStates.length + ' others.';
-  }
+  let noteParts = [];
+  if (legalCount > 0)      noteParts.push('<strong>' + legalCount + ' states</strong> allow abortion at week ' + week);
+  if (restrictedCount > 0) noteParts.push('<strong>' + restrictedCount + ' states</strong> have a gestational limit that has already passed');
+  if (totalBanCount > 0)   noteParts.push('<strong>' + totalBanCount + ' states</strong> have a total ban with no gestational access');
+  note.innerHTML = noteParts.join(' · ') + '.';
+  note.style.fontWeight = 'normal';
 
   // prev / next
   document.getElementById('prev-btn').disabled = week <= 1;
