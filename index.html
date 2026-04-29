@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formed 40</title>
+  <style>
+    :root {
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --color-text-primary: #1a1a1a;
+      --color-text-secondary: #6b6b6b;
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f5f5f5;
+      --color-border-tertiary: #e0e0e0;
+      --color-border-secondary: #c8c8c8;
+      --border-radius-md: 8px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    #app{font-family:var(--font-sans);max-width:420px;margin:0 auto;min-height:600px;}
+    #home{display:block;}
+    #detail{display:none;}
+    .home-header{text-align:center;padding:1.5rem 1rem 0.75rem;}
+    .home-title{font-size:22px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.3px;}
+    .home-tagline{font-size:13px;color:var(--color-text-secondary);margin-top:5px;line-height:1.5;}
+    .weeks-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:0.75rem 1rem 1.5rem;}
+    .wk{aspect-ratio:1;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background 0.12s,border-color 0.12s;}
+    .wk:hover{background:var(--color-background-secondary);border-color:var(--color-border-secondary);}
+    .wk-num{font-size:15px;font-weight:500;color:var(--color-text-primary);}
+    .wk-label{font-size:9px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.4px;margin-top:1px;}
+    .detail-top{display:flex;align-items:center;gap:8px;padding:1rem 1rem 0.5rem;}
+    .back-btn{background:none;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:5px 10px;font-size:12px;color:var(--color-text-secondary);cursor:pointer;}
+    .back-btn:hover{background:var(--color-background-secondary);}
+    .detail-week-badge{font-size:13px;font-weight:500;color:var(--color-text-primary);}
+    .detail-body{padding:0 1rem 2rem;}
+    .section{margin-bottom:1.25rem;}
+    .section-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.6px;color:var(--color-text-secondary);margin-bottom:8px;}
+    .dev-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.875rem 1rem;font-size:14px;line-height:1.65;color:var(--color-text-primary);}
+    .states-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+    .state-chip{border-radius:4px;padding:4px 2px;font-size:9px;font-weight:500;text-align:center;line-height:1.2;}
+    .state-legal{background:#f09595;color:#501313;}
+    .state-illegal{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);}
+    .states-legend{display:flex;gap:12px;margin-bottom:8px;align-items:center;}
+    .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+    .legend-text{font-size:11px;color:var(--color-text-secondary);}
+    .story-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.875rem 1rem;font-size:14px;line-height:1.65;color:var(--color-text-primary);border-left:3px solid #f09595;}
+    .talking-point{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:0.875rem 1rem;font-size:14px;line-height:1.6;color:var(--color-text-primary);font-style:italic;}
+    .states-note{font-size:11px;color:var(--color-text-secondary);margin-top:6px;line-height:1.5;}
+  </style>
+</head>
+<body>
+
+<div id="app">
+<div id="home">
+  <div class="home-header">
+    <div class="home-title">Formed 40</div>
+    <div class="home-tagline">Select a week of pregnancy to see who your baby already is — and where the law stands.</div>
+  </div>
+  <div class="weeks-grid" id="weeks-grid"></div>
+</div>
+<div id="detail">
+  <div class="detail-top">
+    <button class="back-btn" onclick="showHome()">← Back</button>
+    <div class="detail-week-badge" id="detail-title"></div>
+  </div>
+  <div class="detail-body">
+    <div class="section">
+      <div class="section-title">State abortion laws this week</div>
+      <div class="states-legend">
+        <div class="legend-dot" style="background:#f09595;"></div>
+        <div class="legend-text">Legal in this state</div>
+        <div class="legend-dot" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);"></div>
+        <div class="legend-text">Banned or restricted</div>
+      </div>
+      <div class="states-grid" id="states-grid"></div>
+      <div class="states-note" id="states-note"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Your baby this week</div>
+      <div class="dev-card" id="dev-text"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">A story of survival</div>
+      <div class="story-card" id="story-text"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Start the conversation</div>
+      <div class="talking-point" id="talking-text"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const ALL_STATES = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+
+function legalAtWeek(state, week) {
+  const totalBan = ["AL","AR","ID","IN","KY","LA","MS","MO","ND","OK","SD","TN","TX","WV","WY"];
+  if (totalBan.includes(state)) return false;
+  if (["FL","GA","IA","SC"].includes(state)) return week < 6;
+  if (["NC","NE"].includes(state)) return week < 12;
+  if (state === "UT") return week < 18;
+  if (state === "MT") return week < 20;
+  if (["KS","OH","WI"].includes(state)) return week < 22;
+  if (["AZ","AK","DE","HI","IL","MD","MI","MN","NV","NH","NJ","NM","NY","OR","PA","RI","WA"].includes(state)) return week < 24;
+  if (state === "MA") return week < 24;
+  if (state === "ME") return week < 24;
+  if (state === "VA") return week < 25;
+  if (["CA","CO","VT","CT"].includes(state)) return true;
+  return week < 24;
+}
+
+const DATA = {
+  1:{dev:"At week 1, your baby's story has already begun at the genetic level — a unique DNA blueprint unlike any other human who has ever lived is now encoded in every cell. The fertilized egg, called a zygote, begins dividing rapidly, doubling every 12–15 hours as it travels toward the uterus. All 46 chromosomes — determining eye color, personality traits, and biological sex — are already set.",story:"Premature birth survival research begins around week 22, but the journey of every person who has ever lived began exactly here. Every abortion survivor — like Gianna Jessen, who survived a saline abortion — started at this moment.",talk:"If life doesn't begin at fertilization, when exactly does it begin? Who decides that?"},
+  2:{dev:"The embryo, now called a blastocyst, implants into the uterine wall. Your baby already has a distinct genetic identity — he or she is not part of the mother's body but a separate organism with a unique genome. The outer cells begin forming the placenta, and the inner cell mass will become your baby's body.",story:"Every survivor of abortion — including Claire Culwell, who survived a failed abortion procedure — had this exact beginning. Claire was born with hip dysplasia and was adopted at birth. Today she speaks publicly about her experience.",talk:"If a pregnancy is ended at week 2, a genetically unique human being is gone. Isn't that at least worth acknowledging?"},
+  3:{dev:"The neural tube begins forming this week — the foundation for your baby's brain and spinal cord. Three distinct cell layers are developing that will become every organ, bone, and system in the body. Your baby's heart cells have already begun to differentiate.",story:"The neural tube forms now — the same structure that, if it develops fully, becomes the brain that will one day think, dream, and love. Anencephaly survivors like Baby K lived beyond all predictions, sparking national debate about the value of every life.",talk:"At week 3, a brain is starting to form. At what point in brain development does a life become worth protecting?"},
+  4:{dev:"Your baby's heart begins beating this week — just 22 days after fertilization. The embryo is now about the size of a poppy seed but is actively building the structures for eyes, ears, and limbs. Blood is already flowing through tiny developing vessels.",story:"The heart starts beating at week 4. Gianna Jessen, an abortion survivor born at 7.5 months, has said: 'If abortion is about women's rights, then what were mine?' Her story begins right here.",talk:"The heart is beating at 4 weeks. If that same heart stopped in a wanted pregnancy, we'd call it a tragedy. Why is the difference only whether the baby was wanted?"},
+  5:{dev:"The embryo is about 2mm long — the size of a sesame seed — but the brain, spinal cord, heart, and early digestive system are actively forming. The heart is beating at 100–110 times per minute. Arm and leg buds are beginning to appear.",story:"At 5 weeks, a heartbeat is detectable by transvaginal ultrasound. In multiple states, this heartbeat detection triggers legal protection — yet in others, this same beating heart can legally be stopped.",talk:"Six states ban abortion after a heartbeat is detected around week 6. The other 44 don't. If a heartbeat means life in an emergency room, why not here?"},
+  6:{dev:"A heartbeat is clearly detectable on ultrasound this week, beating 100–110 times per minute. The nose, mouth, and ears are beginning to take shape. The baby's eyes are forming — the retinas are already pigmented. Brain activity has begun. The baby is about the size of a sweet pea.",story:"In Florida, Georgia, Iowa, and South Carolina, this heartbeat triggers a legal ban on abortion. The same baby, in California or Colorado, has no protection at all. The inconsistency is not medical — it is purely political.",talk:"At 6 weeks, a doctor can hear a heartbeat on ultrasound. Florida bans abortion here. California doesn't. What changed about the baby when they crossed the state line?"},
+  7:{dev:"Your baby is growing rapidly — now about 1/3 of an inch long. The brain is developing so fast it produces 100 new neurons per minute. Tiny hand and foot plates are forming, and the baby is beginning to move — though you won't feel it yet. All major organ systems are under construction.",story:"Dr. Bernard Nathanson, a former abortionist who performed over 60,000 abortions, changed his position after seeing ultrasound footage at this stage. He said seeing the baby move changed everything. He later made the documentary 'The Silent Scream.'",talk:"At 7 weeks, the baby's brain is producing 100 new cells per minute. Is that level of neurological activity irrelevant to how we decide when life has value?"},
+  8:{dev:"By week 8, every major organ is present — the heart, brain, lungs, kidneys, and liver are all forming. Your baby is now officially called a fetus. He or she is about 1/2 inch long, and of the 4,500 structures in the adult human body, 4,000 are already present. The baby's heartbeat reaches 150–170 beats per minute.",story:"Claire Culwell was one of twins. Her twin did not survive the abortion procedure. Claire was born premature, with club feet and dislocated hips — injuries consistent with the attempt. She survived and today advocates for abortion survivors.",talk:"At 8 weeks, 4,000 of the 4,500 structures in your adult body already exist in your baby. What's the scientific argument that this isn't a human being?"},
+  9:{dev:"Your baby's fingerprints are being formed this week — the unique patterns that will identify him or her for life. The baby can bend fingers around objects placed in the palm. Thumb sucking may already be occurring. The embryonic tail has disappeared and the baby looks unmistakably human.",story:"Fingerprints form at week 9. These are the same fingerprints that would appear at a crime scene, identify a victim, or unlock a phone. They belong to a specific, irreplaceable person — beginning now.",talk:"Your baby's fingerprints form at 9 weeks. Fingerprints identify a unique individual human being. So what exactly are we saying when we say it isn't a person yet?"},
+  10:{dev:"Your baby is about 1.2 inches long and fully formed in miniature. Arms, hands, fingers, feet, and toes are all present. Fingernails are beginning to grow. The baby squints, swallows, puckers, frowns, and can be startled by touch. The external genitals are beginning to form.",story:"At 10 weeks, the baby responds to touch — squinting and pulling away from stimulation. Research by Dr. Kanwaljeet Anand, a pediatric pain expert, suggests pain pathways begin developing during this period.",talk:"At 10 weeks, your baby flinches and pulls away from touch. We call that a pain response in every other context. Why is this one different?"},
+  11:{dev:"Your baby is opening and closing fists, and the bones are beginning to harden. Knees, elbows, and ankles are fully working. The baby's face has clearly human features — distinct forehead, nose, and chin. Hiccups may already be occurring.",story:"At 11 weeks, babies have been photographed on ultrasound appearing to smile, yawn, and stretch. These aren't reflexes we associate with non-persons.",talk:"11 weeks: distinct human face, working joints, opening and closing fists. At what point does 'it's not a person' stop being a scientific statement and start being a moral choice?"},
+  12:{dev:"All organs, limbs, bones, and muscles are present and will now grow and mature. The baby is about 2 inches long and weighs about half an ounce. The kidneys are producing urine. The baby can suck his or her thumb. This is the end of the first trimester.",story:"Nebraska and North Carolina ban abortion at 12 weeks. The majority of U.S. states do not. The baby is identical in both — only the zip code differs.",talk:"12 weeks: every organ is present, the baby sucks a thumb, the kidneys work. Nebraska bans abortion here. New York doesn't. What's the difference between those two babies?"},
+  13:{dev:"Your baby is now about 2.6 inches long. The fetal bladder is now visible on ultrasound. The face continues to develop, and the baby's vocal cords are forming. Unique facial expressions — distinct to this individual — are beginning to appear. The baby sleeps and wakes in cycles.",story:"At 13 weeks, sleep-wake cycles begin. The baby already has individual rhythms — a personality in formation. Every person who has ever lived passed through this exact stage.",talk:"Your baby has sleep cycles at 13 weeks. We protect sleep for newborns. Why not here?"},
+  14:{dev:"The baby's skin is beginning to thicken, and fine hair called lanugo starts to grow. Fingers can be brought to the mouth, and the baby can turn its head. External genitals are now fully developed — a boy or a girl, identifiable on ultrasound. Fingerprints continue to form.",story:"At 14 weeks, parents can often learn whether they're having a son or a daughter. The baby's sex was determined at fertilization — a boy or a girl has been waiting to be known all along.",talk:"You can find out if it's a boy or a girl at 14 weeks. Does knowing the sex of a baby change whether it's a person? If so, why?"},
+  15:{dev:"The baby is 6.6 inches long and weighs about 4 ounces. A surge of new nerve cell production begins this week — laying the neurological foundation for memory, thought, and sensation. The baby already has adult-level taste buds. Breathing practice using amniotic fluid is underway.",story:"Arizona previously banned abortion at 15 weeks before voters expanded access to viability. The debate centered on this exact stage of development — when the baby has taste, nerve development, and human-scale organ function.",talk:"At 15 weeks, your baby has taste buds as developed as an adult's and is producing hundreds of thousands of new nerve cells per day. Does that level of development not matter?"},
+  16:{dev:"The baby weighs about 5 ounces and is 7.3 inches long. The baby is actively moving — turning, kicking, and somersaulting — though the mother may not feel it yet. Bone marrow is forming. The heart pumps approximately 25 quarts of blood per day.",story:"At 16 weeks, some mothers feel the first flutters of movement — called quickening. This moment has been described across every culture in history as the recognition that a baby is there.",talk:"At 16 weeks, your baby's heart pumps 25 quarts of blood a day. If that heart stopped, what exactly would we have lost?"},
+  17:{dev:"The baby is about 8 inches long and actively responds to sound. The ears are positioned correctly, and the baby is beginning to hear. The skeleton is rapidly hardening from cartilage to bone. Fat tissue is beginning to form under the skin.",story:"Research from the University of Durham found that fetuses at 17 weeks respond differently to different tastes — showing preference and aversion. Individual preference. Already.",talk:"Your baby responds to taste and sound at 17 weeks. When we talk about 'potential,' aren't we describing someone already actively experiencing the world?"},
+  18:{dev:"The baby is nearly 6 inches long and can blink, frown, and yawn. Some studies suggest pain response is developing at this stage. The skeleton is hardening. The baby can hear your voice and may respond to music.",story:"Dr. Kanwaljeet Anand's research on fetal pain — developed from his work with premature newborns — suggests pain processing structures are developing in this window. His findings changed protocols for fetal surgery.",talk:"At 18 weeks, some researchers say your baby can feel pain. If there's scientific uncertainty, shouldn't we err on the side of caution?"},
+  19:{dev:"The baby weighs about 8.5 ounces and is covered in a white protective coating called vernix. A rapid surge of nerve cell production continues. The baby's senses — taste, smell, hearing, sight, and touch — are all developing simultaneously.",story:"At 19 weeks, five senses are developing at once. Every sensory experience this baby will ever have is being built right now — the architecture of a conscious life.",talk:"19 weeks: taste, smell, hearing, sight, and touch — all five senses developing simultaneously. What kind of being develops all five senses?"},
+  20:{dev:"Your baby weighs about 10 ounces and is roughly 10 inches long — the halfway point. The baby has established sleeping patterns. He or she can coordinate arm and leg movements and responds to pain signals. Eyebrows and eyelashes are forming.",story:"At 20 weeks, Micah Pickering was delivered prematurely due to a life-threatening complication. He survived and thrives today. His mother has said the question she was asked — 'Are you sure you want to do everything to save him?' — haunts her.",talk:"At 20 weeks — the halfway point — your baby sleeps, dreams, responds to pain, and has eyebrows. Iowa bans abortion here. Colorado doesn't. What does that say about how we make these decisions?"},
+  21:{dev:"The baby is about 10.5 inches long and weighs nearly 12 ounces. The bone marrow is now producing blood cells. Rapid eye movements (REM) sleep — the phase when humans dream — begins around this week. The baby has REM sleep before he or she has ever been born.",story:"Babies born at 21 weeks have survived with intensive care — though survival is rare. Samuel Armas, photographed appearing to grasp a surgeon's finger during open-fetal surgery at 21 weeks, became one of the most published photos in the world.",talk:"Your baby has REM sleep — dream sleep — at 21 weeks. If we extend legal personhood based on consciousness, aren't we already there?"},
+  22:{dev:"The baby weighs about 1 pound and is 11 inches long. All five senses are functioning. The baby can hear your heartbeat, your voice, and sounds from outside the womb. Brain waves are becoming complex and organized. The grip is strengthening.",story:"Micaiah Stancil was born at 22 weeks and survived. His mother was told to consider abortion given the risks. He graduated high school and is pursuing a career in music. He says his favorite sound is his mother's voice — the voice he heard in the womb.",talk:"At 22 weeks, a baby can hear your voice, has complex brain waves, and may survive outside the womb. Kansas and Ohio ban abortion here. California, New York, and Oregon don't. Who decided which babies matter?"},
+  23:{dev:"A baby born at 23 weeks has a chance of survival with intensive neonatal care. The baby is rapidly adding fat, and the nervous system is maturing fast. He or she can hear, feel, and respond to external stimulation. Brain activity is measurable and complex.",story:"Amillia Sonja Taylor was born at 21 weeks and 6 days — one of the earliest surviving premature births on record. She weighed less than 10 ounces. Today she is a healthy young adult. Her survival redefined what we thought was possible.",talk:"At 23 weeks, a baby can survive outside the womb with medical care. If born today, we'd fight to save this baby. If not born, many states allow this baby to be aborted. What changed?"},
+  24:{dev:"This week marks the threshold of viability — with intensive medical care, babies born at 24 weeks have a real chance of survival. The lungs accelerate development. The face is fully formed. The baby practices breathing by inhaling and exhaling amniotic fluid.",story:"James Elgin Gill was born at 21 weeks and 5 days in 1987 and survived — one of the earliest premature births ever recorded. At viability (24 weeks), babies are far more developed than James was, yet viability is used as the legal cutoff in many states.",talk:"'Viability' changes as medicine advances — it's now 22–24 weeks. Should the legal right to life depend on what year's medical technology you were born near?"},
+  25:{dev:"The baby is about 13 inches long and weighs nearly 2 pounds. More body fat makes the skin less wrinkled. The nervous system is maturing rapidly. The baby responds to touch on the mother's belly and may kick in response to sounds.",story:"Virginia bans abortion starting in the third trimester — around week 25. The same baby, one week earlier, has no such protection in Virginia. One week. One state line. A completely different legal status.",talk:"Virginia bans abortion at week 25. The baby at week 24 and the baby at week 25 are essentially identical. What changed in 7 days that determines whether this life is protected?"},
+  26:{dev:"Your baby can now open his or her eyes for the first time. The retinas are developing and the baby may respond to bright lights. Brain development is rapid, with brain waves showing increasingly complex patterns. The baby weighs about 2 pounds.",story:"At 26 weeks, babies born prematurely regularly survive and thrive. NICU nurses who care for these babies describe them as fully individual — with distinct personalities, preferences, and responses. They are not abstractions.",talk:"At 26 weeks, your baby opens his or her eyes for the first time. Neonatal nurses who care for premature babies at this stage say each one is clearly an individual. Why does location inside or outside the womb change the legal calculus?"},
+  27:{dev:"The baby weighs about 2 pounds and is approximately 14.5 inches long. The brain is developing billions of neurons. The baby can now distinguish your voice from others and may be calmed by familiar sounds. Sleep and wake cycles are well established.",story:"Babies born at 27 weeks have a greater than 90% survival rate with modern neonatal care. This is a baby who, if delivered today, would be named, photographed, celebrated, and fought for with every medical tool available.",talk:"Survival rate at 27 weeks: over 90%. In most states this baby can still be legally aborted. Doesn't the 90% survival rate at least create a moral obligation to ask harder questions?"},
+  28:{dev:"Your baby weighs about 2.5 pounds and blinks, coughs, hiccups, and may dream during REM sleep. The baby can now feel pain clearly and respond to it. Brain wave patterns resemble those of a newborn. The lungs are maturing.",story:"The third trimester begins. Every state restricts abortion to some degree by now — yet 9 states and D.C. impose no gestational limit at all. A baby at 28 weeks is indistinguishable in development from a premature newborn.",talk:"28 weeks: your baby dreams, hiccups, blinks, and feels pain. 9 states still allow elective abortion at this stage. If this baby were born today, we'd call ending its life murder. What's different?"},
+  29:{dev:"The baby is gaining weight rapidly — about half a pound per week. The brain is developing grooves and folds to increase surface area. The baby's kicks are strong enough for the mother to see them from across the room. Red blood cells are forming in the bone marrow.",story:"At 29 weeks, premature babies routinely survive and go home healthy. The idea that a 29-week baby inside the womb has fewer rights than outside it is not a scientific position — it's a legal one.",talk:"Your baby's kicks are visible through skin at 29 weeks. In 9 states, this baby has no legal protection. Do you believe that's the right answer?"},
+  30:{dev:"The baby's brain is developing so rapidly that the head grows significantly each week. He or she can now see light and dark through the uterine wall. The baby is approximately 15.7 inches long and weighs about 3 pounds. Fat deposits continue to build.",story:"Many parents who have lost pregnancies at this stage describe a grief indistinguishable from the loss of a born child — because the child they knew was already fully present: kicking, hiccuping, responding to their voices.",talk:"If a wanted baby is lost at 30 weeks, we hold memorials and grieve deeply. If an unwanted baby is ended at 30 weeks, some states call it a choice. Can both things be true?"},
+  31:{dev:"The baby's lungs and digestive tract are almost fully mature. He or she can turn his head toward light, and brain signals are controlling breathing and temperature regulation. The baby is about 16 inches long and weighs roughly 3.3 pounds.",story:"At 31 weeks, the survival rate with modern neonatal care exceeds 95%. Every major organ system is near complete. This is not a potential human being — this is a human being with potential.",talk:"95% survival rate. Nearly fully developed. Still legally unprotected in some states. At what point does the law have to catch up with biology?"},
+  32:{dev:"The baby's skin is becoming less transparent as fat fills in. Fingernails have reached the fingertips. The baby is practicing breathing movements. He or she can now regulate body temperature. Most babies at 32 weeks who are born prematurely will survive without major complications.",story:"Babies born at 32 weeks today go home from the NICU in weeks and typically develop without any lasting health issues. The difference between a 32-week baby inside and outside the womb is location — nothing more.",talk:"A 32-week baby born prematurely goes home healthy. A 32-week baby not yet born is still unprotected in some states. Location determines legal personhood. Is that a defensible position?"},
+  33:{dev:"The baby is about 17 inches long and weighs approximately 4.4 pounds. The brain is developing rapidly. The baby's bones are fully developed but still soft enough to pass through the birth canal. He or she sleeps up to 90% of the time — conserving energy for the final stretch of growth.",story:"A study of premature babies at 33 weeks showed they already exhibit distinct personality traits observable to NICU nurses — some are feisty, some calm, some intensely curious. Personhood isn't conferred by birth.",talk:"NICU nurses describe 33-week premature babies as having distinct personalities. If personality precedes birth, what exactly are we waiting for to extend legal protection?"},
+  34:{dev:"The baby weighs about 5 pounds and the nervous system and immune system are rapidly maturing. The baby's eyes can focus, and he or she responds to familiar voices and music with measurable heart rate changes. The lungs are nearly fully developed.",story:"Research shows that babies at 34 weeks who hear their mother's voice have a measurable drop in heart rate — a calming response. They already know her. They have already formed their first relationship.",talk:"Your baby's heart rate drops when it hears your voice at 34 weeks. A relationship already exists. Does that relationship matter when we decide what protections apply?"},
+  35:{dev:"The baby is almost fully developed — about 18 inches long and weighing around 5.5 pounds. Most major development is now complete, and the final weeks are about weight gain and lung maturation. The baby moves frequently and responds to sound, light, and touch.",story:"At 35 weeks, the survival rate is over 99% and most health outcomes mirror those of full-term babies. The idea that these babies do not deserve legal protection in any U.S. state is almost universally rejected — almost.",talk:"35 weeks. 99% survival rate. Almost fully developed. And yet 9 states and D.C. have no gestational limit on abortion. Should survival rate factor into law?"},
+  36:{dev:"The baby is nearly full-term — about 18.5 inches long and weighing around 6 pounds. The lungs are producing surfactant for independent breathing. The digestive system is ready to process breast milk. The baby is settling into a head-down position in preparation for birth.",story:"At 36 weeks, late-term abortions remain legal in a small number of states. The procedures used at this stage — dilation and evacuation — involve dismemberment of a fully formed baby. The medical community rarely discusses what these procedures entail.",talk:"A 36-week baby is indistinguishable from a newborn in every medical sense. In some states this can still be legally ended. Does the method matter when we decide how to feel about that?"},
+  37:{dev:"The baby is considered early-term and is essentially fully developed. He or she is about 19 inches long and weighs around 6.5 pounds. The brain, though fully structurally present, continues to develop neurological connections that will continue after birth.",story:"Babies born at 37 weeks go home with their parents. They are named, held, nursed, and loved. The 37-week baby not yet born is biologically identical. The difference is location and legal status.",talk:"The baby at 37 weeks inside the womb and the baby at 37 weeks outside the womb are the same baby. Do you believe their rights should be different?"},
+  38:{dev:"The baby is fully mature and ready for birth. He or she weighs approximately 7 pounds and is about 19.5 inches long. All organs are functioning. The baby is practicing breathing, swallowing, and blinking. He or she knows your voice, your heartbeat, and the rhythm of your daily life.",story:"At 38 weeks, this baby already has a history — months of movement, response, growth, and relationship. Birth is not the beginning of personhood. It is a change of address.",talk:"Your 38-week baby knows your voice, your heartbeat, your rhythm. Birth is days away. Is the only thing separating 'person' from 'not person' the moment of delivery?"},
+  39:{dev:"The baby is full-term. He or she is approximately 7–8 pounds and about 20 inches long. The brain will continue developing for years after birth, but everything needed for life outside the womb is ready. The baby continues practicing skills needed for survival.",story:"Polls consistently show that the vast majority of Americans — including those who identify as pro-choice — oppose abortion in the third trimester. And yet 9 states impose no limit. The law and public opinion are radically misaligned.",talk:"Most Americans — including most pro-choice Americans — oppose abortion at 39 weeks. And yet it's legal in 9 states. If you agree it should be restricted at some point, where? And why not earlier?"},
+  40:{dev:"Your baby is ready. Fully formed, fully capable, and fully present. He or she has spent 40 weeks growing, developing, feeling, responding, and becoming. Birth is not the beginning of this person's story. It is the next chapter.",story:"Every person who has ever lived — every scientist, artist, teacher, friend, and child — passed through every one of these 40 weeks. The question Formed 40 asks is simple: at which week did they become worth protecting?",talk:"Week 40. A fully formed human baby. If you believe life deserves protection here, work backward through the weeks. Where does your conviction start — and can you explain why not one week earlier?"}
+};
+
+function legalCount(week) {
+  return ALL_STATES.filter(s => legalAtWeek(s, week)).length;
+}
+
+function showHome() {
+  document.getElementById('home').style.display = 'block';
+  document.getElementById('detail').style.display = 'none';
+}
+
+function showWeek(week) {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('detail').style.display = 'block';
+  document.getElementById('detail-title').textContent = 'Week ' + week + ' of 40';
+
+  const d = DATA[week] || DATA[40];
+  document.getElementById('dev-text').textContent = d.dev;
+  document.getElementById('story-text').textContent = d.story;
+  document.getElementById('talking-text').textContent = '"' + d.talk + '"';
+
+  const grid = document.getElementById('states-grid');
+  grid.innerHTML = '';
+  let legalStates = [];
+  ALL_STATES.forEach(s => {
+    const legal = legalAtWeek(s, week);
+    if (legal) legalStates.push(s);
+    const chip = document.createElement('div');
+    chip.className = 'state-chip ' + (legal ? 'state-legal' : 'state-illegal');
+    chip.textContent = s;
+    grid.appendChild(chip);
+  });
+
+  const illegalCount = 50 - legalStates.length;
+  const note = document.getElementById('states-note');
+  if (legalStates.length === 0) {
+    note.textContent = 'Abortion is banned in all 50 states at week ' + week + '.';
+  } else {
+    note.textContent = 'At week ' + week + ', abortion is legal in ' + legalStates.length + ' states and banned or restricted in ' + illegalCount + '. A baby at this stage is protected in ' + illegalCount + ' states and not in ' + legalStates.length + ' others.';
+  }
+}
+
+const grid = document.getElementById('weeks-grid');
+for (let w = 1; w <= 40; w++) {
+  const btn = document.createElement('div');
+  btn.className = 'wk';
+  btn.innerHTML = '<div class="wk-num">' + w + '</div><div class="wk-label">week</div>';
+  btn.onclick = () => showWeek(w);
+  grid.appendChild(btn);
+}
+</script>
+
+</body>
+</html>
