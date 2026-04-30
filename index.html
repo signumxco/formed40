@@ -850,7 +850,7 @@
         <div class="story-card" id="story-text"></div>
         <div id="pain-flag-wrap"></div>
       </div>
-      <div class="section">
+      <div class="section" id="wildlife-section" style="display:none;">
         <div class="section-title">More protected by law than your baby</div>
         <div class="wildlife-grid" id="wildlife-grid"></div>
         <div class="wildlife-detail" id="wildlife-detail"></div>
@@ -1113,11 +1113,14 @@ const WILDLIFE = [
 ];
 
 function renderWildlife(week) {
+  const section = document.getElementById('wildlife-section');
   const grid = document.getElementById('wildlife-grid');
   const detail = document.getElementById('wildlife-detail');
   grid.innerHTML = '';
   detail.className = 'wildlife-detail';
   detail.innerHTML = '';
+  if (week !== 40) { section.style.display = 'none'; return; }
+  section.style.display = '';
 
   const applicable = WILDLIFE.filter(w => week >= w.from);
   let activeTile = null;
